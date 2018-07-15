@@ -91,6 +91,8 @@ set viminfo='100,/50,%,<1000,f50,s100,:100,c,h,!
 set iminsert=0
 set imsearch=0
 set imdisable
+" :terminal起動時に<esc>でノーマルモードへ
+tnoremap <Esc> <C-w><S-n>
 " ステータスライン
 set laststatus=2
 " メッセージ表示欄
@@ -277,9 +279,9 @@ autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " 拡張子のHighlight設定
- function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
- exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
- exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+    exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+    exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
 endfunction
 call NERDTreeHighlightFile('py', 'yellow', 'none', 'yellow', '#151515')
 call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
@@ -308,27 +310,27 @@ nmap <Leader>f :CtrlP<CR>
 set rtp+=~/.fzf
 " Vimからfzfを実行
 nnoremap <silent> <Leader>C :call fzf#run({
-    \ 'source': map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-    \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-    \ 'sink': 'colo',
-    \ 'options': '+m',
-    \ 'left': 30
-    \})<CR>
+            \ 'source': map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+            \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+            \ 'sink': 'colo',
+            \ 'options': '+m',
+            \ 'left': 30
+            \})<CR>
 
 " quickrunの非同期処理
 let g:quickrun_config={'*': {'split': ''}}
 let g:quickrun_config._={ 'runner':'vimproc',
-\       "runner/vimproc/updatetime" : 10,
-\       "outputter/buffer/close_on_empty" : 1,
-\ }
+            \       "runner/vimproc/updatetime" : 10,
+            \       "outputter/buffer/close_on_empty" : 1,
+            \ }
 
 " node.js用設定
 autocmd User Node if &filetype == "javascript" | setlocal expandtab | endif
 autocmd User Node
-  \ if &filetype == "javascript" |
-  \   nmap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
-  \   nmap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
-  \ endif
+            \ if &filetype == "javascript" |
+            \   nmap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
+            \   nmap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
+            \ endif
 
 
 
@@ -342,7 +344,7 @@ autocmd BufNewFile,BufRead .pryrc     set filetype=ruby
 autocmd FileType eruby exec 'set filetype=' . 'eruby.' . b:eruby_subtype
 autocmd FileType ruby setl iskeyword+=?
 
- " ブラウザで開く
+" ブラウザで開く
 let g:netrw_nogx = 1 " netrwのキーマッピングを無効化
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
@@ -367,7 +369,7 @@ inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
 endfunction
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
@@ -378,7 +380,7 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
+    let g:neocomplete#sources#omni#input_patterns = {}
 endif
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 " syntastic設定
@@ -391,10 +393,10 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 " 絵文字設定
 silent! if emoji#available()
-  let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
-  let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
-  let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
-  let g:gitgutter_sign_modified_removed = emoji#for('collision')
+let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
+let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
+let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
+let g:gitgutter_sign_modified_removed = emoji#for('collision')
 endif
 " vimshell設定
 " ,sh: シェルを起動
@@ -451,10 +453,10 @@ nnoremap <silent> [toggle]t :setl expandtab!<CR>:setl expandtab?<CR>
 nnoremap <silent> [toggle]w :setl wrap!<CR>:setl wrap?<CR>
 " :e などでファイルを開く際にフォルダが存在しない場合は自動作成
 function! s:mkdir(dir, force)
-  if !isdirectory(a:dir) && (a:force ||
-        \ input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$')
-    call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
-  endif
+    if !isdirectory(a:dir) && (a:force ||
+                \ input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$')
+        call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
+    endif
 endfunction
 " vim 起動時のみカレントディレクトリを開いたファイルの親ディレクトリに指定
 function! s:ChangeCurrentDir(directory, bang)
@@ -517,19 +519,19 @@ let php_parent_error_open = 1
 let g:sql_type_default = 'mysql'
 " SQLのPHP文字リテラルへの整形(:Sqltop, :Sqlfromp)
 function! SQLToPHP()
-%s/^\(.\+\)$/"\1 " \./g
+    %s/^\(.\+\)$/"\1 " \./g
 
-normal G$
-execute "normal ?.&lt;CR&gt;"
-normal xxggVG
-echo "Convert to PHP String is finished."
+    normal G$
+    execute "normal ?.&lt;CR&gt;"
+    normal xxggVG
+    echo "Convert to PHP String is finished."
 endfunction
 command! Sqltop :call SQLToPHP()
 function! SQLFromPHP()
-%s/^"\(.\+\) " *\.*$/\1/g
+    %s/^"\(.\+\) " *\.*$/\1/g
 
-normal ggVG
-echo "Convert from PHP String is finished."
+    normal ggVG
+    echo "Convert from PHP String is finished."
 endfunction
 command! Sqlfromp :call SQLFromPHP()
 
@@ -562,9 +564,9 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -583,7 +585,7 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
+    let g:neocomplete#sources#omni#input_patterns = {}
 endif
 " Perl用設定
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
@@ -598,29 +600,29 @@ smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 " スニペット用のスーパータブ設定
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
+            \ "\<Plug>(neosnippet_expand_or_jump)"
+            \: pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
+            \ "\<Plug>(neosnippet_expand_or_jump)"
+            \: "\<TAB>"
 
 " スニペットコンプリートメーカー用設定
 if has('conceal')
-  set conceallevel=2 concealcursor=i
+    set conceallevel=2 concealcursor=i
 endif
 
 " 辞書設定
 let g:neocomplete#sources#dictionary#dictionaries  = {
-\    'css':        $HOME . '/.vim/dict/css.dict',
-\    'html':       $HOME . '/.vim/dict/html.dict',
-\    'javascript': $HOME . '/.vim/dict/javascript.dict',
-\    'php':        $HOME . '/.vim/dict/php.dict',
-\    'java':       $HOME . '/.vim/dict/java.dict',
-\    'perl':       $HOME . '/.vim/dict/perl.dict',
-\    'ruby':       $HOME . '/.vim/dict/ruby.dict',
-\}
+            \    'css':        $HOME . '/.vim/dict/css.dict',
+            \    'html':       $HOME . '/.vim/dict/html.dict',
+            \    'javascript': $HOME . '/.vim/dict/javascript.dict',
+            \    'php':        $HOME . '/.vim/dict/php.dict',
+            \    'java':       $HOME . '/.vim/dict/java.dict',
+            \    'perl':       $HOME . '/.vim/dict/perl.dict',
+            \    'ruby':       $HOME . '/.vim/dict/ruby.dict',
+            \}
 
- " キーワード定義
+" キーワード定義
 if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
 endif
@@ -630,19 +632,19 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 " Java用設定
 "SQLのJava文字リテラルへの整形(:Sqltoj, :Sqlfromj)
 function! SQLToJava()
-%s/^\(.\+\)$/"\1 " \+/g
+    %s/^\(.\+\)$/"\1 " \+/g
 
-normal G$
-execute "normal ?+\&lt;CR&gt;"
-normal xxggVG
-echo "Convert to Java String is finished."
+    normal G$
+    execute "normal ?+\&lt;CR&gt;"
+    normal xxggVG
+    echo "Convert to Java String is finished."
 endfunction
 command! Sqltoj :call SQLToJava()
 function! SQLFromJava()
-%s/^"\(.\+\) " *+*$/\1/g
+    %s/^"\(.\+\) " *+*$/\1/g
 
-normal ggVG
-echo "Convert from Java String is finished."
+    normal ggVG
+    echo "Convert from Java String is finished."
 endfunction
 command! Sqlfromj :call SQLFromJava()
 
@@ -653,8 +655,8 @@ au FileType ruby setlocal errorformat=%m\ in\ %f\ on\ line\ %l
 
 " Scala設定
 augroup filetypedetect
-autocmd! BufNewFile,BufRead *.scala setfiletype scala
-autocmd! BufNewFile,BufRead *.sbt setfiletype scala
+    autocmd! BufNewFile,BufRead *.scala setfiletype scala
+    autocmd! BufNewFile,BufRead *.sbt setfiletype scala
 augroup END
 
 
@@ -677,17 +679,17 @@ nmap <Leader>r <plug>(quickrun)
 
 " 全角スペースのハイライトを設定
 function! ZenkakuSpace()
-  highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
+    highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
 endfunction
 if has('syntax')
-  augroup ZenkakuSpace
-    autocmd!
-    " ZenkakuSpaceをカラーファイルで設定するなら次の行は削除
-    autocmd ColorScheme       * call ZenkakuSpace()
-    " 全角スペースのハイライト指定
-    autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
-  augroup END
-  call ZenkakuSpace()
+    augroup ZenkakuSpace
+        autocmd!
+        " ZenkakuSpaceをカラーファイルで設定するなら次の行は削除
+        autocmd ColorScheme       * call ZenkakuSpace()
+        " 全角スペースのハイライト指定
+        autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
+    augroup END
+    call ZenkakuSpace()
 endif
 
 
@@ -700,18 +702,18 @@ let g:ref_source_webdict_sites = {
             \   }
             \ }
 function! g:ref_source_webdict_sites.alc.filter(output)
-      return join(split(a:output, "\n")[42 :], "\n")
+    return join(split(a:output, "\n")[42 :], "\n")
 endfunction
 
 " はてなブログ投稿設定
 let g:hateblo_vim = {
-    \ 'user':         'netcraft3',
-    \ 'api_key':      '************',
-    \ 'api_endpoint': 'https://blog.hatena.ne.jp/netcraft3/netcraft3.hatenablog.com/atom',
-    \ 'WYSIWYG_mode': 0,
-    \ 'always_yes':   0,
-    \ 'edit_command': 'edit'
-\ }
+            \ 'user':         'netcraft3',
+            \ 'api_key':      '************',
+            \ 'api_endpoint': 'https://blog.hatena.ne.jp/netcraft3/netcraft3.hatenablog.com/atom',
+            \ 'WYSIWYG_mode': 0,
+            \ 'always_yes':   0,
+            \ 'edit_command': 'edit'
+            \ }
 
 " Gmail設定
 let g:gmail_imap = 'imap.gmail.com:993'
