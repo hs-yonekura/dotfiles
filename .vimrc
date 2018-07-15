@@ -34,7 +34,7 @@ set matchpairs& matchpairs+=<:>
 " 対応括弧をハイライト表示する
 set showmatch
 " 対応括弧の表示秒数を3秒にする
-set matchtime=3
+set matchtime=1
 " ウィンドウの幅より長い行は折り返され、次の行に続けて表示される
 set wrap
 " 入力されているテキストの最大幅を無効にする
