@@ -112,7 +112,7 @@ set wrapscan
 set pastetoggle=<F12>
 set clipboard=unnamed,unnamedplus,autoselect
 " ESCキーが押されてからの待ち時間
-set timeoutlen=300
+set timeoutlen=0
 " マウス対応
 set mouse=a
 set ttymouse=xterm2
