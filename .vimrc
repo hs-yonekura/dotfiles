@@ -29,6 +29,9 @@ set ruler
 set nocompatible
 " 移動コマンドを使ったとき、行頭に移動しない
 set nostartofline
+" カーソル位置表示
+set cursorline
+hi clear CursorLine
 " 対応括弧に<と>のペアを追加
 set matchpairs& matchpairs+=<:>
 " 対応括弧をハイライト表示する
@@ -79,6 +82,11 @@ set t_Co=256
 set background=dark
 " カラースキーマ Molokai
 colorscheme molokai 
+if &term == "xterm-256color"
+    colorscheme molokai
+    hi Comment ctermfg=102
+    hi Visual  ctermbg=255
+endif
 " 行番号表示
 set number
 " タイトルをウィンドウ枠に表示
