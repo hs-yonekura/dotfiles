@@ -40,10 +40,12 @@ set showmatch
 set matchtime=1
 " ウィンドウの幅より長い行は折り返され、次の行に続けて表示される
 set wrap
+" 入力モード中に素早くJJと入力した場合はESCとみなす
+inoremap <silent> jj <ESC>
 " 入力されているテキストの最大幅を無効にする
 set textwidth=0
 "カーソルを表示行で移動する。物理行移動は<C-n>,<C-p>
-nnoremap j gj
+" nnoremap j gj
 nnoremap k gk
 nnoremap <Down> gj
 nnoremap <Up>   gk
@@ -117,7 +119,7 @@ set wildmode=list:longest
 " 最後尾まで検索を終えたら次の検索で先頭に移る
 set wrapscan
 " ペースト
-set pastetoggle=<F12>
+" set pastetoggle=<F12>
 set clipboard=unnamed,unnamedplus,autoselect
 " ESCキーが押されてからの待ち時間
 set timeoutlen=0
@@ -149,7 +151,14 @@ Plug 'thinca/vim-quickrun'
 " JavaScript用プラグイン
 Plug 'pangloss/vim-javascript'
 " JavaScript Syntaxチェック
-Plug 'jelera/vim-javascript-syntax'
+"Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx'] }
+"Plug 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
+"Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
+"Plug 'maxmellon/vim-jsx-pretty', { 'for': ['javascript', 'javascript.jsx'] }
+"Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do': 'npm install' }
+" JavaScript Syntaxチェック
+Plug 'pangloss/vim-javascript'
+" JavaScript Syntaxチェック
 " CoffeeScript用
 Plug 'kchmck/vim-coffee-script'
 " node.js用
@@ -170,6 +179,8 @@ Plug 'gregsexton/matchtag'
 Plug 'tyru/open-browser.vim'
 " IME関連
 Plug 'tyru/eskk.vim'
+" Emmet関連
+Plug 'mattn/emmet-vim'
 " Macのみブラウザをリロード
 Plug 'tell-k/vim-browsereload-mac'
 " Pythonプラグイン
@@ -197,8 +208,8 @@ Plug 'junegunn/vim-github-dashboard'
 Plug 'mattn/gist-vim'
 " スニペット
 Plug 'Townk/vim-autoclose'
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
+" Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/neosnippet-snippets'
 Plug 'tpope/vim-endwise'
 Plug 'Townk/vim-autoclose'
 " IDEプラグイン
@@ -395,6 +406,9 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+autocmd FileType html imap <buffer><expr><tab>
+    \ emmet#isExpandable() ? "\<plug>(emmet-expand-abbr)" :
+    \ "\<tab>"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -421,8 +435,7 @@ nnoremap <silent> ,ss <S-v>:VimShellSendString<CR>
 autocmd QuickFixCmdPost *grep* cwindow
 " w!! でスーパーユーザーとして保存（sudoが使える環境限定）
 cmap w!! w !sudo tee > /dev/null %
-" 入力モード中に素早くJJと入力した場合はESCとみなす
-inoremap jj <Esc>
+
 " ESCを二回押すことでハイライトを消す
 nmap <silent> <Esc><Esc> :nohlsearch<CR>
 " カーソル下の単語を * で検索
@@ -435,7 +448,7 @@ nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
 " j, k による移動を折り返されたテキストでも自然に振る舞うように変更
-nnoremap j gj
+" nnoremap j gj
 nnoremap k gk
 " vを二回で行末まで選択
 vnoremap v $h
@@ -487,7 +500,7 @@ endif
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 "表示行単位で行移動する
-nnoremap <silent> j gj
+" nnoremap <silent> j gj
 nnoremap <silent> k gk
 "インサートモードでも移動
 inoremap <c-d> <delete>
@@ -601,18 +614,18 @@ autocmd BufNewFile,BufRead *.psgi   set filetype=perl
 autocmd BufNewFile,BufRead *.t      set filetype=perl
 
 " Snippet設定
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets'
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+" let g:neosnippet#enable_snipmate_compatibility = 1
+" let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets'
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
 " スニペット用のスーパータブ設定
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-            \ "\<Plug>(neosnippet_expand_or_jump)"
-            \: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-            \ "\<Plug>(neosnippet_expand_or_jump)"
-            \: "\<TAB>"
+" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"             \ "\<Plug>(neosnippet_expand_or_jump)"
+"             \: pumvisible() ? "\<C-n>" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"             \ "\<Plug>(neosnippet_expand_or_jump)"
+"            \: "\<TAB>"
 
 " スニペットコンプリートメーカー用設定
 if has('conceal')
@@ -727,3 +740,19 @@ let g:hateblo_vim = {
 let g:gmail_imap = 'imap.gmail.com:993'
 let g:gmail_smtp = 'smtp.gmail.com:465'
 let g:gmail_user_name = '*****@****.**'
+
+function! EnableJavascript()
+  " Setup used libraries
+  let g:used_javascript_libs = 'jquery,underscore,react,flux,jasmine,d3'
+  let b:javascript_lib_use_jquery = 1
+  let b:javascript_lib_use_underscore = 1
+  let b:javascript_lib_use_react = 1
+  let b:javascript_lib_use_flux = 1
+  let b:javascript_lib_use_jasmine = 1
+  let b:javascript_lib_use_d3 = 1
+endfunction
+augroup MyVimrc
+  autocmd!
+augroup END
+autocmd MyVimrc FileType javascript,javascript.jsx call EnableJavascript()
+test
