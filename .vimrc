@@ -131,12 +131,12 @@ set showcmd
 
 " プラグイン管理 Vim-Plug
 call plug#begin('~/.vim/plugged')
-Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+" Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 " ディレクトリ表示
 "Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 " Clojureコーディング支援
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 " Go入力支援
@@ -204,8 +204,8 @@ Plug 'chrisbra/csv.vim'
 " HTML5プラグイン
 Plug 'othree/html5.vim'
 " GitHubプラグイン
-Plug 'junegunn/vim-github-dashboard'
-Plug 'mattn/gist-vim'
+" Plug 'junegunn/vim-github-dashboard'
+" Plug 'mattn/gist-vim'
 " スニペット
 Plug 'Townk/vim-autoclose'
 " Plug 'Shougo/neosnippet.vim'
@@ -414,12 +414,12 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 " 絵文字設定
-silent! if emoji#available()
-let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
-let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
-let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
-let g:gitgutter_sign_modified_removed = emoji#for('collision')
-endif
+" silent! if emoji#available()
+" let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
+" let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
+" let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
+" let g:gitgutter_sign_modified_removed = emoji#for('collision')
+" endif
 " vimshell設定
 " ,sh: シェルを起動
 nnoremap <silent> ,sh :VimShell<CR>
@@ -755,4 +755,3 @@ augroup MyVimrc
   autocmd!
 augroup END
 autocmd MyVimrc FileType javascript,javascript.jsx call EnableJavascript()
-test
